@@ -75,7 +75,7 @@ export default function Login({ onLoginSuccess }) {
               Maharat Nakhon Ratchasima Hospital
             </p>
             <p style={{ color: theme.textMuted, marginTop: '8px', fontSize: '14px' }}>
-              ระบบบริหารจัดการนัดหมายคลินิกโลหิตวิทยา
+              
             </p>
           </div>
           
