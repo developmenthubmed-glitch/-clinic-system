@@ -83,16 +83,16 @@ export default function CalendarView() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px', borderBottom: `3px solid ${theme.secondary}`, paddingBottom: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '24px', borderBottom: `3px solid ${theme.secondary}`, paddingBottom: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '36px', fontWeight: '900', margin: '0 0 8px 0', color: theme.primary, letterSpacing: '-0.5px' }}>
-            Clinic Calendar <span style={{fontSize: '20px', color: theme.textMuted, fontWeight: 'normal', marginLeft: '10px'}}>(ปฏิทินตาราง)</span>
+          <h1 style={{ fontSize: '32px', fontWeight: '900', margin: '0 0 8px 0', color: theme.primary, letterSpacing: '-0.5px' }}>
+            Clinic Calendar <span style={{fontSize: '18px', color: theme.textMuted, fontWeight: 'normal', marginLeft: '10px'}}>(ปฏิทินตาราง)</span>
           </h1>
-          <p style={{ margin: 0, color: theme.textMuted, fontSize: '15px' }}>Monthly overview of clinic schedules and patient quotas. (ภาพรวมตารางคลินิกและโควตาแต่ละเดือน)</p>
+          <p style={{ margin: 0, color: theme.textMuted, fontSize: '14px' }}>Monthly overview of clinic schedules and patient quotas. (ภาพรวมตารางคลินิกและโควตา)</p>
         </div>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <label style={{ fontSize: '14px', fontWeight: 'bold', color: theme.text }}>Filter (กรองคลินิก):</label>
-          <select value={filterProtocol} onChange={e => setFilterProtocol(e.target.value)} style={{ padding: '10px 16px', border: `1px solid ${theme.secondary}`, borderRadius: '4px', fontSize: '14px', fontWeight: 'bold' }}>
+          <label style={{ fontSize: '13px', fontWeight: 'bold', color: theme.text }}>Filter (กรองคลินิก):</label>
+          <select value={filterProtocol} onChange={e => setFilterProtocol(e.target.value)} style={{ padding: '8px 12px', border: `1px solid ${theme.secondary}`, borderRadius: '4px', fontSize: '13px', fontWeight: 'bold' }}>
             <option value="all">-- All Clinics (ทั้งหมด) --</option>
             {protocols.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
@@ -101,27 +101,26 @@ export default function CalendarView() {
 
       <div style={{ background: theme.surface, borderRadius: '8px', border: `1px solid ${theme.border}`, boxShadow: '0 4px 6px rgba(0,0,0,0.05)', overflow: 'hidden' }}>
         {/* Calendar Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 30px', background: '#f9f9f9', borderBottom: `1px solid ${theme.border}` }}>
-          <button onClick={prevMonth} style={{ padding: '8px 16px', background: '#fff', border: `1px solid ${theme.border}`, borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', color: theme.primary, boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>◀ Prev</button>
-          <div style={{ fontWeight: '900', fontSize: '22px', color: theme.primary }}>{monthNames[currentMonthDate.getMonth()]} {currentMonthDate.getFullYear()}</div>
-          <button onClick={nextMonth} style={{ padding: '8px 16px', background: '#fff', border: `1px solid ${theme.border}`, borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', color: theme.primary, boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>Next ▶</button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', background: '#f9f9f9', borderBottom: `1px solid ${theme.border}` }}>
+          <button onClick={prevMonth} style={{ padding: '6px 12px', background: '#fff', border: `1px solid ${theme.border}`, borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', color: theme.primary, boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>◀ Prev</button>
+          <div style={{ fontWeight: '900', fontSize: '20px', color: theme.primary }}>{monthNames[currentMonthDate.getMonth()]} {currentMonthDate.getFullYear()}</div>
+          <button onClick={nextMonth} style={{ padding: '6px 12px', background: '#fff', border: `1px solid ${theme.border}`, borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', color: theme.primary, boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>Next ▶</button>
         </div>
 
-        {/* Days of week */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', textAlign: 'center', background: theme.primary, color: 'white', fontWeight: 'bold', fontSize: '14px' }}>
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => <div key={d} style={{ padding: '14px 0' }}>{d}</div>)}
+        {/* Days of week (บังคับไม่ให้ขยายเกิน 1fr ด้วย minmax(0, 1fr)) */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', textAlign: 'center', background: theme.primary, color: 'white', fontWeight: 'bold', fontSize: '13px' }}>
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => <div key={d} style={{ padding: '10px 0' }}>{d}</div>)}
         </div>
 
-        {/* Grid Container */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
+        {/* Grid Container (บังคับไม่ให้ขยายเกิน 1fr เช่นกัน) */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gridAutoRows: 'minmax(120px, auto)' }}>
           {generateCalendarDays().map((dateStr, i) => {
-            if (!dateStr) return <div key={i} style={{ borderBottom: `1px solid ${theme.border}`, borderRight: `1px solid ${theme.border}`, height: '140px', background: theme.bg }}></div>;
+            if (!dateStr) return <div key={i} style={{ borderBottom: `1px solid ${theme.border}`, borderRight: `1px solid ${theme.border}`, background: theme.bg }}></div>;
             
             const dayNum = dateStr.split('-')[2];
             const isToday = dateStr === todayStr;
             const isSelected = dateStr === selectedDate;
             
-            // หาข้อมูลคลินิกและคิวในวันนี้
             const daySchedules = schedules.filter(s => s.schedule_date === dateStr && (filterProtocol === 'all' || s.disease_name === filterProtocol));
             
             return (
@@ -130,38 +129,42 @@ export default function CalendarView() {
                 onClick={() => setSelectedDate(dateStr)}
                 style={{ 
                   display: 'flex', flexDirection: 'column', 
-                  borderBottom: `1px solid ${theme.border}`, borderRight: `1px solid ${theme.border}`, 
-                  height: '140px', /* ล็อคความสูงของกล่องไม่ให้ยืดพัง */
-                  padding: '10px', 
-                  background: isSelected ? '#f0f9ff' : 'white', cursor: 'pointer', 
-                  border: isSelected ? `2px solid ${theme.secondary}` : 'none' 
+                  borderBottom: `1px solid ${theme.border}`, 
+                  borderRight: `1px solid ${theme.border}`, 
+                  minHeight: '120px', 
+                  minWidth: 0, /* หัวใจสำคัญ: ป้องกันตารางดันทะลุขวา */
+                  padding: '6px', 
+                  background: isSelected ? '#f0f9ff' : 'white', 
+                  cursor: 'pointer', 
+                  boxShadow: isSelected ? `inset 0 0 0 2px ${theme.secondary}` : 'none'
                 }}
               >
-                {/* หัวตารางวันที่ */}
+                {/* วันที่ */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '18px', fontWeight: 'bold', color: isToday ? theme.secondary : theme.text }}>{parseInt(dayNum)}</span>
-                  {isToday && <span style={{ fontSize: '10px', background: theme.secondary, color: 'white', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>TODAY</span>}
+                  <span style={{ fontSize: '14px', fontWeight: 'bold', color: isToday ? theme.secondary : theme.text }}>{parseInt(dayNum)}</span>
+                  {isToday && <span style={{ fontSize: '9px', background: theme.secondary, color: 'white', padding: '2px 4px', borderRadius: '4px', fontWeight: 'bold' }}>TODAY</span>}
                 </div>
 
-                {/* กล่องแสดงโปรโตคอล (มี Scrollbar ภายในถ้ามีคลินิกเยอะ) */}
+                {/* รายการคลินิก */}
                 <div style={{ 
-                  flex: 1, overflowY: 'auto', /* ทำให้เลื่อนได้ถ้าข้อมูลล้น */
-                  marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px', 
-                  paddingRight: '4px' 
+                  marginTop: '6px', 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: '4px' 
                 }}>
                   {daySchedules.map(sched => {
                     const booked = appointments.filter(a => a.appointment_date === dateStr && patients.find(p=>p.hn===a.patient_hn)?.disease_name === sched.disease_name).length;
                     const isFull = booked >= sched.quota;
                     return (
                       <div key={sched.id} style={{ 
-                        fontSize: '11px', padding: '6px 8px', borderRadius: '4px', 
+                        padding: '4px', borderRadius: '4px', 
                         background: isFull ? '#fef2f2' : '#f0fdf4', 
                         color: isFull ? theme.danger : theme.success, 
                         border: `1px solid ${isFull ? '#fecaca' : '#bbf7d0'}`,
-                        boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
+                        wordBreak: 'break-word' /* บังคับให้ตัดบรรทัดใหม่แทนการดันกรอบแตก */
                       }}>
-                        <div style={{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{sched.disease_name}</div>
-                        <div style={{ marginTop: '2px' }}>{booked} / {sched.quota} Booked</div>
+                        <div style={{ fontWeight: 'bold', fontSize: '10px', lineHeight: '1.2' }}>{sched.disease_name}</div>
+                        <div style={{ marginTop: '2px', fontSize: '9px', fontWeight: 'bold' }}>{booked}/{sched.quota} Booked</div>
                       </div>
                     )
                   })}
@@ -174,11 +177,11 @@ export default function CalendarView() {
 
       {/* Selected Date Details */}
       {selectedDate && (
-        <div style={{ marginTop: '32px', background: theme.surface, borderRadius: '8px', border: `1px solid ${theme.border}`, padding: '30px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
-          <h3 style={{ margin: '0 0 20px 0', color: theme.primary, fontSize: '20px', fontWeight: '800' }}>Appointments on {selectedDate} (รายชื่อผู้ป่วยนัดหมาย)</h3>
+        <div style={{ marginTop: '32px', background: theme.surface, borderRadius: '8px', border: `1px solid ${theme.border}`, padding: '24px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+          <h3 style={{ margin: '0 0 16px 0', color: theme.primary, fontSize: '18px', fontWeight: '800' }}>Appointments on {selectedDate} (รายชื่อผู้ป่วยนัดหมาย)</h3>
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead style={{ background: theme.bg, fontSize: '13px', color: theme.primary }}>
-              <tr><th style={{padding:'16px'}}>HN</th><th style={{padding:'16px'}}>Patient Name (ชื่อ-นามสกุล)</th><th style={{padding:'16px'}}>Clinic (คลินิก)</th><th style={{padding:'16px'}}>Status (สถานะ)</th></tr>
+              <tr><th style={{padding:'12px'}}>HN</th><th style={{padding:'12px'}}>Patient Name (ชื่อ-นามสกุล)</th><th style={{padding:'12px'}}>Clinic (คลินิก)</th><th style={{padding:'12px'}}>Status (สถานะ)</th></tr>
             </thead>
             <tbody>
               {apptsOnSelectedDate.length === 0 ? <tr><td colSpan="4" style={{padding:'30px', textAlign:'center', color:theme.textMuted}}>No appointments. (ไม่มีการนัดหมาย)</td></tr> : 
@@ -186,10 +189,10 @@ export default function CalendarView() {
                   const pt = patients.find(p => p.hn === a.patient_hn);
                   return (
                     <tr key={a.id} style={{ borderBottom: `1px solid ${theme.border}`, fontSize: '14px', background: idx % 2 === 0 ? '#fff' : '#f9f9f9' }}>
-                      <td style={{padding:'16px', fontWeight:'bold'}}>{a.patient_hn}</td>
-                      <td style={{padding:'16px'}}>{pt ? `${pt.title} ${pt.first_name} ${pt.last_name}` : 'Unknown'}</td>
-                      <td style={{padding:'16px'}}><span style={{background: '#e0f2fe', color: '#0369a1', padding: '4px 8px', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px'}}>{pt?.disease_name || '-'}</span></td>
-                      <td style={{padding:'16px'}}><Badge status={a.status} /></td>
+                      <td style={{padding:'12px', fontWeight:'bold'}}>{a.patient_hn}</td>
+                      <td style={{padding:'12px'}}>{pt ? `${pt.title} ${pt.first_name} ${pt.last_name}` : 'Unknown'}</td>
+                      <td style={{padding:'12px'}}><span style={{background: '#e0f2fe', color: '#0369a1', padding: '4px 8px', borderRadius: '4px', fontWeight: 'bold', fontSize: '12px'}}>{pt?.disease_name || '-'}</span></td>
+                      <td style={{padding:'12px'}}><Badge status={a.status} /></td>
                     </tr>
                   );
               })}
